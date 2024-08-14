@@ -91,6 +91,8 @@ a beaver worker for dealing with k8s/k3s events in R (under developing)
 
 > pod “nginx-pod” deleted
 
+13. submit_job
+
 ## Roadmap functions
 
 1.  kubectl_describe
