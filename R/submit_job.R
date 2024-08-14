@@ -13,6 +13,7 @@
 #' @param nram_limit the nram limit
 #' @param env_list the env value list,default as NULL
 #' @param restartPolicy the restartPolicy,default as Never
+#' @param hostPath the attached hostpath,default as the current file dir,attached to /mnt in the container
 #' @return NULL
 #' 
 #' @export

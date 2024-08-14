@@ -37,6 +37,8 @@ submit_job(
 
 \item{env_list}{the env value list,default as NULL}
 
+\item{hostPath}{the attached hostpath,default as the current file dir,attached to /mnt in the container}
+
 \item{restartPolicy}{the restartPolicy,default as Never}
 }
 \description{
