@@ -3,16 +3,30 @@ flat_dev.Rmd:
   state: active
   R:
   - R/docker_install.R
+  - R/kubectl_apply.R
+  - R/kubectl_delete.R
+  - R/kubectl_exec.R
+  - R/kubectl_get.R
   - R/kubectl_install.R
+  - R/kubectl_logs.R
+  - R/kubectl_portforward.R
   - R/minikube_install.R
   - R/minikube_start.R
   - R/placeholder.R
+  - R/submit_job.R
   tests:
   - tests/testthat/test-placeholder.R
   - tests/testthat/test-docker_install.R
   - tests/testthat/test-minikube_install.R
   - tests/testthat/test-minikube_start.R
   - tests/testthat/test-kubectl_install.R
+  - tests/testthat/test-kubectl_apply.R
+  - tests/testthat/test-kubectl_get.R
+  - tests/testthat/test-kubectl_portforward.R
+  - tests/testthat/test-kubectl_exec.R
+  - tests/testthat/test-kubectl_logs.R
+  - tests/testthat/test-kubectl_delete.R
+  - tests/testthat/test-submit_job.R
   vignettes: vignettes/get-started.Rmd
   inflate:
     flat_file: dev/flat_dev.Rmd

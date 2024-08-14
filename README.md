@@ -13,10 +13,7 @@ a beaver worker for dealing with k8s/k3s events in R (under developing)
 4.  kubectl_install
 5.  minikube_start
 6.  utils-pipe
-
-## Roadmap functions
-
-1.  kubectl_apply
+7.  kubectl_apply
 
 > for example
 
@@ -40,7 +37,7 @@ a beaver worker for dealing with k8s/k3s events in R (under developing)
 
 > kubectl apply -f service-hellok8s-clusterip.yaml
 
-2.  kubectl_get
+8.  kubectl_get
 
 > for example
 
@@ -62,13 +59,13 @@ a beaver worker for dealing with k8s/k3s events in R (under developing)
 
 > kubectl get endpoints
 
-3.  kubectl_portforward
+9.  kubectl_portforward
 
 > for example
 
 > kubectl port-forward nginx-pod 4000:80
 
-4.kubectl_exec
+10.kubectl_exec
 
 > for example
 
@@ -76,13 +73,13 @@ a beaver worker for dealing with k8s/k3s events in R (under developing)
 
 > kubectl exec nginx-pod – ls
 
-5.  kubectl_logs
+11. kubectl_logs
 
 > for example
 
 > kubectl logs –follow nginx-pod
 
-6.  kubectl_delete
+12. kubectl_delete
 
 > for example
 
@@ -94,7 +91,9 @@ a beaver worker for dealing with k8s/k3s events in R (under developing)
 
 > pod “nginx-pod” deleted
 
-7.  kubectl_describe
+## Roadmap functions
+
+1.  kubectl_describe
 
 > for example
 
@@ -103,3 +102,4 @@ a beaver worker for dealing with k8s/k3s events in R (under developing)
 ## Reference
 
 1.  [guangzhengli/k8s-tutorials](https://github.com/guangzhengli/k8s-tutorials)
+2.  kubernetes temples by lunuan

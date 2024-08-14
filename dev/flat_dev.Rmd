@@ -178,7 +178,293 @@ test_that("kubectl_install works", {
 })
 ```
   
+# kubectl_apply
+    
+```{r function-kubectl_apply}
+#' kubectl_apply
+#' 
+#' kubectl_apply functions
+#' @param yamlfiles chr
+#' @param namespace chr,default as NULL
+#' @return yamlfiles
+#' 
+#' @export
+kubectl_apply <- function(yamlfiles,namespace = NULL){
+    if (!file.exists(yamlfiles)) stop("the yamlfiles not found")
+  command = glue::glue("kubectl apply -f {yamlfiles}")
+  if (!is.null(namespace)) command = glue::glue("{command} -n {namespace}")
+  message(glue::glue("RUN for {command}"))
+  system(command)
+  return(yamlfiles)
+}
+```
+  
+```{r example-kubectl_apply}
 
+```
+  
+```{r tests-kubectl_apply}
+test_that("kubectl_apply works", {
+  expect_true(inherits(kubectl_apply, "function")) 
+})
+```
+  
+# kubectl_get
+    
+```{r function-kubectl_get}
+#' kubectl_get
+#' 
+#' kubectl_get functions for 
+#'  deployments,service,ingress,namespaces,configmap,jobs,
+#'  cronjob,secret,endpoints
+#' @param servicetype chr,one of the following:deployments,service,ingress,namespaces,configmap,jobs, cronjob,secret,endpoints
+#' @return data.frame
+#' 
+#' @export
+kubectl_get <- function(servicetype){
+  if (servicetype %in% c('deployments','service','ingress','namespaces','configmap','jobs', 'cronjob','secret','endpoints')){
+    command <- glue::glue("kubectl get {servicetype}")
+    if (servicetype == "configmap") command = paste(command,"--all-namespaces")
+    message(glue::glue("RUN for {command}"))
+  data <- system(command,intern = T) %>%
+    {
+  output <- .
+  header <- output[1]
+  data_lines <- output[-1]
+  data <- do.call(rbind, lapply(data_lines, function(x) {
+    strsplit(x, "\\s{2,}")[[1]]
+  }))
+  header_clean <- strsplit(header, "\\s{2,}")[[1]]
+  if (ncol(data) == length(header_clean)) {
+    colnames(data) <- header_clean
+    data <- as.data.frame(data)
+  }
+    }
+  return(data)
+  }else {
+    stop("choose the right function to be get inside one of the following:deployments,service,ingress,namespaces,configmap,jobs, cronjob,secret,endpoints")
+  }
+    
+}
+```
+  
+```{r example-kubectl_get}
+
+```
+  
+```{r tests-kubectl_get}
+test_that("kubectl_get works", {
+  expect_true(inherits(kubectl_get, "function")) 
+})
+```
+  
+# kubectl_portforward
+    
+```{r function-kubectl_portforward}
+#' kubectl_portforward
+#' 
+#' kubectl port-forward warpper
+#' @param podname the podname
+#' @param hostport the hostport
+#' @param childport the childport for the containers
+#' @return NULL
+#' 
+#' @export
+kubectl_portforward <- function(podname,
+                                hostport,
+                                childport){
+    command = glue::glue("kubectl port-forward {podname} {hostport}:{childport}")
+    message(glue::glue("RUN for {command}"))
+  system(command)
+  return(podname)
+}
+```
+  
+```{r example-kubectl_portforward}
+
+```
+  
+```{r tests-kubectl_portforward}
+test_that("kubectl_portforward works", {
+  expect_true(inherits(kubectl_portforward, "function")) 
+})
+```
+  
+# kubectl_exec
+    
+```{r function-kubectl_exec}
+#' kubectl_exec
+#' 
+#' kubectl exec wrapper 
+#' @param podname podnames
+#' @param arg_command the command to be ran
+#' @return NULL
+#' 
+#' @export
+kubectl_exec <- function(podname,
+                         arg_command){
+    command <- glue::glue("kubectl exec -it {podname} /bin/bash {arg_command} ")
+    message(glue::glue("RUN for {command}"))
+  system(command)
+  return(podname)
+}
+```
+  
+```{r example-kubectl_exec}
+
+```
+  
+```{r tests-kubectl_exec}
+test_that("kubectl_exec works", {
+  expect_true(inherits(kubectl_exec, "function")) 
+})
+```
+  
+# kubectl_logs
+    
+```{r function-kubectl_logs}
+#' kubectl_logs
+#' 
+#' kubectl logs wrapper 
+#' @param podname the podname
+#' @return NULL
+#' 
+#' @export
+kubectl_logs <- function(podname){
+    command <- glue::glue("kubectl logs --follow {podname}")
+    message(glue::glue("RUN for {command}"))
+  system(command)
+  return(podname)
+}
+```
+  
+```{r example-kubectl_logs}
+
+```
+  
+```{r tests-kubectl_logs}
+test_that("kubectl_logs works", {
+  expect_true(inherits(kubectl_logs, "function")) 
+})
+```
+  
+# kubectl_delete
+    
+```{r function-kubectl_delete}
+#' kubectl_delete
+#' 
+#' kubectl delete warpper
+#' 
+#' @param servicetype chr,one of the following:deployments,service,ingress,namespaces,configmap,jobs, cronjob,secret,endpoints
+#' @param object the object to remove
+#' @return chr
+#' 
+#' @export
+kubectl_delete <- function(object,servicetype){
+    if (grep(".yaml",object)){
+      if (!file.exists(object)) stop("the yamlfile not found")
+      command <- glue::glue("kubectl delete -f {object}")
+    } else {
+      if (!(servicetype %in% c('deployments','service','ingress','namespaces','configmap','jobs', 'cronjob','secret','endpoints'))) stop("choose the right function to be get inside one of the following:deployments,service,ingress,namespaces,configmap,jobs, cronjob,secret,endpoints")
+      command <- glue::glue("kubectl delete {servicetype} {object}")
+    }
+  message(glue::glue("RUN for {command}"))
+  system(command)
+  return(object)
+}
+```
+  
+```{r example-kubectl_delete}
+
+```
+  
+```{r tests-kubectl_delete}
+test_that("kubectl_delete works", {
+  expect_true(inherits(kubectl_delete, "function")) 
+})
+```
+  
+# submit_job
+    
+```{r function-submit_job}
+#' submit_job
+#' 
+#' submit_job and run
+#' @param task_names the name of the submit job
+#' @param namespace the namespace used 
+#' @param container the container used
+#' @param command the command submit to run
+#' @param ncpu the cpu request
+#' @param nram the memory request
+#' @param cpu_limit the limit cpu
+#' @param nram_limit the nram limit
+#' @param env_list the env value list,default as NULL
+#' @param restartPolicy the restartPolicy,default as Never
+#' @return NULL
+#' 
+#' @export
+submit_job <- function(task_names,
+                       namespace = "default",
+                       container,
+                       command,
+                       ncpu = 8,
+                       nram = "1024Mi",
+                       cpu_limit = 100,
+                       nram_limit = "10240000Mi",
+                       env_list = NULL,
+                       hostPath = getwd(),
+                       restartPolicy = "Never"){
+    job_yaml = job_yaml
+    # namespace 
+    job_yaml$metadata$namespace <- namespace
+    # task_names
+    job_yaml$metadata$name <- task_names
+    job_yaml$metadata$labels$app <- task_names
+    job_yaml$spec$template$metadata$name <- task_names
+    job_yaml$spec$template$metadata$labels$app <- task_names
+    job_yaml$spec$template$spec$containers[[1]]$name <- task_names
+    # containers
+    job_yaml$spec$template$spec$containers[[1]]$image <- container 
+    # command 
+    job_yaml$spec$template$spec$containers[[1]]$command <- stringr::str_replace(job_yaml$spec$template$spec$containers[[1]]$command,"command",command)
+    # resources_request
+    # cpu
+    job_yaml$spec$template$spec$containers[[1]]$resources$requests$cpu <- ncpu
+    #memory
+    job_yaml$spec$template$spec$containers[[1]]$resources$requests$memory <- nram
+    # resources_limit 
+    # cpu
+    job_yaml$spec$template$spec$containers[[1]]$resources$limits$cpu <- cpu_limit
+    #memory
+    job_yaml$spec$template$spec$containers[[1]]$resources$limits$memory <- nram_limit
+    # env
+    if (!is.null(env_list))job_yaml$spec$template$spec$containers[[1]]$env <- env_list
+    #volumes(current dir)
+    job_yaml$spec$template$spec$volumes[[2]]$hostPath <- hostPath
+    # restart #job_yaml$spec$template$spec$dnsPolicy
+    job_yaml$spec$template$spec$restartPolicy <- restartPolicy
+    fs::dir_create(paste0(
+      hostPath,"/result/yaml/"
+    ))
+    yamlfile <- paste0("result/yaml/",task_names,".yaml")
+    yaml::write_yaml(job_yaml,file = yamlfile )
+    message("runs the yamlfile")
+    kubectl_apply(yamlfiles = yamlfiles,
+                  namespace = namespace)
+    return(task_names)
+}
+```
+  
+```{r example-submit_job}
+
+```
+  
+```{r tests-submit_job}
+test_that("submit_job works", {
+  expect_true(inherits(submit_job, "function")) 
+})
+```
+  
 <!--
 # There can be development actions
 

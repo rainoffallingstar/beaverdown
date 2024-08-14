@@ -76,7 +76,69 @@ fs::dir_delete("testtemp")
 
   
   
+# kubectl_apply
+    
+  
+```{r example-kubectl_apply}
 
+```
+
+  
+  
+# kubectl_get
+    
+  
+```{r example-kubectl_get}
+
+```
+
+  
+  
+# kubectl_portforward
+    
+  
+```{r example-kubectl_portforward}
+
+```
+
+  
+  
+# kubectl_exec
+    
+  
+```{r example-kubectl_exec}
+
+```
+
+  
+  
+# kubectl_logs
+    
+  
+```{r example-kubectl_logs}
+
+```
+
+  
+  
+# kubectl_delete
+    
+  
+```{r example-kubectl_delete}
+
+```
+
+  
+  
+# submit_job
+    
+  
+```{r example-submit_job}
+
+```
+
+  
+  
 <!--
 # There can be development actions
 
