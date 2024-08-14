@@ -1,0 +1,24 @@
+flat_dev.Rmd:
+  path: dev/flat_dev.Rmd
+  state: active
+  R:
+  - R/docker_install.R
+  - R/kubectl_install.R
+  - R/minikube_install.R
+  - R/minikube_start.R
+  - R/placeholder.R
+  tests:
+  - tests/testthat/test-placeholder.R
+  - tests/testthat/test-docker_install.R
+  - tests/testthat/test-minikube_install.R
+  - tests/testthat/test-minikube_start.R
+  - tests/testthat/test-kubectl_install.R
+  vignettes: vignettes/get-started.Rmd
+  inflate:
+    flat_file: dev/flat_dev.Rmd
+    vignette_name: Get started
+    open_vignette: true
+    check: true
+    document: true
+    overwrite: ask
+    clean: ask

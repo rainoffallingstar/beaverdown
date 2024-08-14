@@ -58,7 +58,7 @@ test_that("placeholder works", {
 #' 
 #' install docker in linux systems
 #' @param system linux,macos,windows
-#' @return
+#' @return null
 #' 
 #' @export
 docker_install <- function(system){
@@ -92,7 +92,7 @@ test_that("docker_install works", {
 #' 
 #' install minikube
 #' @param system linux,macos,windows
-#' @return
+#' @return null
 #' 
 #' @export
 minikube_install <- function(system = c("linux","macos","windows")){
@@ -126,7 +126,7 @@ test_that("minikube_install works", {
 #' 
 #' start a cluster by minikube
 #' 
-#' @return
+#' @return null
 #' 
 #' @export
 minikube_start <- function(){
@@ -151,7 +151,7 @@ test_that("minikube_start works", {
 #' 
 #' install kubectl in linux
 #' @param system linux,macos,windows
-#' @return
+#' @return null
 #' 
 #' @export
 kubectl_install <- function(system = c("linux","macos","windows")){
