@@ -3,6 +3,7 @@
 
 # beaverdown
 
+<img src="https://github.com/rainoffallingstar/beaverdown/blob/main/dev/helilogo.png" height="200" align="right"/>
 a beaver worker for dealing with k8s/k3s events in R (under developing)
 
 ## Exsit functions
