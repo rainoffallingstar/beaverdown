@@ -53,8 +53,10 @@ submit_job <- function(task_names,
     job_yaml$spec$template$spec$containers[[1]]$resources$limits$memory <- nram_limit
     # env
     if (!is.null(env_list))job_yaml$spec$template$spec$containers[[1]]$env <- env_list
+    #job_yaml$spec$template$spec$volumes[[1]]$hostPath <- "C/zoneinfo/Asia/Shanghai"
     #volumes(current dir)
-    job_yaml$spec$template$spec$volumes[[2]]$hostPath <- hostPath
+    job_yaml$spec$template$spec$volumes[[2]]$hostPath <- as.character(hostPath) %>% 
+      stringr::str_remove(.,":")
     # restart #job_yaml$spec$template$spec$dnsPolicy
     job_yaml$spec$template$spec$restartPolicy <- restartPolicy
     fs::dir_create(paste0(
@@ -63,7 +65,7 @@ submit_job <- function(task_names,
     yamlfile <- paste0("result/yaml/",task_names,".yaml")
     yaml::write_yaml(job_yaml,file = yamlfile )
     message("runs the yamlfile")
-    kubectl_apply(yamlfiles = yamlfiles,
+    kubectl_apply(yamlfiles = yamlfile,
                   namespace = namespace)
     return(task_names)
 }

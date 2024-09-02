@@ -161,8 +161,7 @@ kubectl_install <- function(system = c("linux","macos","windows")){
     system("brew install kubectl
 ")
   } else if (system == "windows"){
-    system("winget install -e --id Kubernetes.kubectl
-")
+    system("winget install Kubernetes.kubectl")
   }
     
 }
@@ -440,8 +439,10 @@ submit_job <- function(task_names,
     job_yaml$spec$template$spec$containers[[1]]$resources$limits$memory <- nram_limit
     # env
     if (!is.null(env_list))job_yaml$spec$template$spec$containers[[1]]$env <- env_list
+    #job_yaml$spec$template$spec$volumes[[1]]$hostPath <- "C/zoneinfo/Asia/Shanghai"
     #volumes(current dir)
-    job_yaml$spec$template$spec$volumes[[2]]$hostPath <- hostPath
+    job_yaml$spec$template$spec$volumes[[2]]$hostPath <- as.character(hostPath) %>% 
+      stringr::str_remove(.,":")
     # restart #job_yaml$spec$template$spec$dnsPolicy
     job_yaml$spec$template$spec$restartPolicy <- restartPolicy
     fs::dir_create(paste0(
@@ -450,7 +451,7 @@ submit_job <- function(task_names,
     yamlfile <- paste0("result/yaml/",task_names,".yaml")
     yaml::write_yaml(job_yaml,file = yamlfile )
     message("runs the yamlfile")
-    kubectl_apply(yamlfiles = yamlfiles,
+    kubectl_apply(yamlfiles = yamlfile,
                   namespace = namespace)
     return(task_names)
 }
@@ -463,6 +464,75 @@ submit_job <- function(task_names,
 ```{r tests-submit_job}
 test_that("submit_job works", {
   expect_true(inherits(submit_job, "function")) 
+})
+```
+  
+# act_install
+    
+```{r function-act_install}
+#' act_install
+#' 
+#' install act and run github action locally
+#' @param system chr
+#' @return NULL
+#' 
+#' @export
+act_install <- function(system = c("linux","macos","windows")){
+    if (system == "macos"){
+      system("brew install act")
+    }else if (system == "windows"){
+      system("winget install nektos.act")
+    }else{
+      system("curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash")
+    }
+}
+```
+  
+```{r example-act_install}
+
+```
+  
+```{r tests-act_install}
+test_that("act_install works", {
+  expect_true(inherits(act_install, "function")) 
+})
+```
+  
+
+# act_local
+    
+```{r function-act_local}
+#' act_local
+#' 
+#' act_local
+#' @param yamlfile workflow files
+#' @param arg args
+#' @return yamlfile
+#' 
+#' @export
+act_local <- function(yamlfile,arg = NULL){
+  
+  if (!file.exists(yamlfile)){
+    stop("workflow file not found")
+  }
+  command <- glue::glue("act -W {yamlfile}")
+  if (!is.null(arg)){
+    command <- glue::glue("{command} {arg}")
+  }
+  
+  system(command = command)
+  return(yamlfile)
+    
+}
+```
+  
+```{r example-act_local}
+
+```
+  
+```{r tests-act_local}
+test_that("act_local works", {
+  expect_true(inherits(act_local, "function")) 
 })
 ```
   

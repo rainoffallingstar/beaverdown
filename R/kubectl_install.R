@@ -14,8 +14,7 @@ kubectl_install <- function(system = c("linux","macos","windows")){
     system("brew install kubectl
 ")
   } else if (system == "windows"){
-    system("winget install -e --id Kubernetes.kubectl
-")
+    system("winget install Kubernetes.kubectl")
   }
     
 }

@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test
+  namespace: default
+  labels:
+    app: test
+spec:
+  template:
+    metadata:
+      name: test
+      labels:
+        app: test
+    spec:
+      containers:
+      - name: test
+        image: fallingstar10/gmadeomicsrocker
+        command:
+        - sh
+        - -c
+        - cd mnt && echo 'helloword'
+        resources:
+          requests:
+            cpu: '1'
+            memory: 1024Mi
+          limits:
+            cpu: '2'
+            memory: 2048Mi
+        env:
+        - name: ENV_NAME
+          value: ENV_VALUE
+        volumeMounts:
+        - name: localtime
+          mountPath: /etc/localtime
+        - name: current-dir
+          mountPath: /mnt
+          subPath: ''
+      volumes:
+      - name: localtime
+        hostPath: C/zoneinfo/Asia/Shanghai
+      - name: current-dir
+        hostPath: D/fallingstarGitcode/beaverdown
+      restartPolicy: Never
+      dnsPolicy: ClusterFirst

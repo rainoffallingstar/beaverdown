@@ -2,6 +2,8 @@ flat_dev.Rmd:
   path: dev/flat_dev.Rmd
   state: active
   R:
+  - R/act_install.R
+  - R/act_local.R
   - R/docker_install.R
   - R/kubectl_apply.R
   - R/kubectl_delete.R
@@ -27,6 +29,8 @@ flat_dev.Rmd:
   - tests/testthat/test-kubectl_logs.R
   - tests/testthat/test-kubectl_delete.R
   - tests/testthat/test-submit_job.R
+  - tests/testthat/test-act_install.R
+  - tests/testthat/test-act_local.R
   vignettes: vignettes/get-started.Rmd
   inflate:
     flat_file: dev/flat_dev.Rmd

@@ -139,6 +139,25 @@ fs::dir_delete("testtemp")
 
   
   
+# act_install
+    
+  
+```{r example-act_install}
+
+```
+
+  
+  
+
+# act_local
+    
+  
+```{r example-act_local}
+
+```
+
+  
+  
 <!--
 # There can be development actions
 
